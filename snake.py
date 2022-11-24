@@ -16,9 +16,11 @@ def load_high_score(state):
     # se já existir um high score devem guardar o valor em state['high_score']
     pass
 
+
 def write_high_score_to_file(state):
     # devem escrever o valor que está em state['high_score'] no ficheiro de high scores
     pass
+
 
 def create_score_board(state):
     score_board = turtle.Turtle()
@@ -32,36 +34,44 @@ def create_score_board(state):
     load_high_score(state)
     update_score_board(state)
 
+
 def update_score_board(state):
     state['score_board'].clear()
-    state['score_board'].write("Score: {} High Score: {}".format(state['score'], state['high_score']), align="center", font=("Helvetica", 24, "normal"))
+    state['score_board'].write("Score: {} High Score: {}".format(state['score'], state['high_score']), align="center",
+                               font=("Helvetica", 24, "normal"))
+
 
 def go_up(state):
     if state['snake']['current_direction'] != 'down':
         state['snake']['current_direction'] = 'up'
 
+
 def go_down(state):
     if state['snake']['current_direction'] != 'up':
         state['snake']['current_direction'] = 'down'
+
 
 def go_left(state):
     if state['snake']['current_direction'] != 'right':
         state['snake']['current_direction'] = 'left'
 
+
 def go_right(state):
     if state['snake']['current_direction'] != 'left':
         state['snake']['current_direction'] = 'right'
+
 
 def init_state():
     state = {'score_board': None, 'new_high_score': False, 'high_score': 0, 'score': 0, 'food': None, 'window': None}
     # Informação necessária para a criação do score board
     # Para gerar a comida deverá criar uma nova tartaruga e colocar a mesma numa posição aleatória do campo
     snake = {
-        'head': None,                  # Variável que corresponde à cabeça da cobra
-        'current_direction': None   # Indicação da direção atual do movimento da cobra
+        'head': None,  # Variável que corresponde à cabeça da cobra
+        'current_direction': None  # Indicação da direção atual do movimento da cobra
     }
     state['snake'] = snake
     return state
+
 
 def setup(state):
     window = turtle.Screen()
@@ -93,18 +103,26 @@ def setup(state):
     create_score_board(state)
     create_food(state)
 
+
 def move(state):
     """
     Função responsável pelo movimento da cobra no ambiente.
     """
     snake = state['snake']
-
     # ADICIONADO
-    print(snake['head'].xcor())
-    print(snake['body'].xcor())
+    if state['snake']['current_direction'] == 'up':
+        snake['head'].setheading(90)
+        snake['head'].fd(20)
+    if state['snake']['current_direction'] == 'left':
+        snake['head'].setheading(180)
+        snake['head'].fd(20)
+    if state['snake']['current_direction'] == 'right':
+        snake['head'].setheading(0)
+        snake['head'].fd(20)
+    if state['snake']['current_direction'] == 'down':
+        snake['head'].setheading(-90)
+        snake['head'].fd(20)
 
-    snake['head'].fd(20)
-    snake['body'].fd(20)
     # ADICIONADO
 
 
@@ -113,7 +131,21 @@ def create_food(state):
     Função responsável pela criação da comida. Note que elas deverão ser colocadas em posições aleatórias,
     mas dentro dos limites do ambiente.
     """
+
     # a informação sobre a comida deve ser guardada em state['food']
+
+    # ADICIONADO
+    x_cor = random.randint(-287, 287)
+    y_cor = random.randint(-387, 387)
+
+    state['food'] = turtle.Turtle()
+    state['food'].shape('circle')
+    state['food'].showturtle()
+    state['food'].pu()
+    state['food'].goto(x_cor, y_cor)
+    state['food'].color('red')
+    # ADICIONADO
+
 
 def check_if_food_to_eat(state):
     """
@@ -121,8 +153,14 @@ def check_if_food_to_eat(state):
     estiver a uma distância inferior a 15 píxeis a cobra pode comer a peça de comida.
     """
     food = state['food']
+    snake = state['snake']
+    if snake['head'].distance(food) <= 15:
+        food.hideturtle()
+        create_food(state)
+
     # para ler ou escrever os valores de high score, score e new high score, devem usar os respetivos campos do
     # state: state['high_score'], state['score'] e state['new_high_score']
+
 
 def boundaries_collision(state):
     """
@@ -130,6 +168,7 @@ def boundaries_collision(state):
     função deverá returnar o valor booleano True, caso contrário retorna False.
     """
     return False
+
 
 def check_collisions(state):
     """
@@ -140,6 +179,7 @@ def check_collisions(state):
     snake = state['snake']
     return boundaries_collision(state)
 
+
 def main():
     state = init_state()
     setup(state)
@@ -147,7 +187,7 @@ def main():
         state['window'].update()
         check_if_food_to_eat(state)
         move(state)
-        time.sleep(SPEED) 
+        time.sleep(SPEED)
     print("YOU LOSE!")
     if state['new_high_score']:
         write_high_score_to_file(state)
