@@ -9,7 +9,7 @@ DEFAULT_SIZE = 20
 SNAKE_SHAPE = 'square'
 HIGH_SCORES_FILE_PATH = 'high_scores.txt'
 # Controla a velocidade da cobra. Quanto menor o valor, mais rápido é o movimento da cobra.
-SPEED = 0.5
+SPEED = 0.3
 
 
 def load_high_score(state):
@@ -123,7 +123,6 @@ def move(state):
         snake['head'].setheading(-90)
         snake['head'].fd(20)
 
-
     # ADICIONADO
 
 
@@ -153,11 +152,13 @@ def check_if_food_to_eat(state):
     Função responsável por verificar se a cobra tem uma peça de comida para comer. Deverá considerar que se a comida
     estiver a uma distância inferior a 15 píxeis a cobra pode comer a peça de comida.
     """
+    # ADICIONADO
     food = state['food']
     snake = state['snake']
     if snake['head'].distance(food) <= 15:
         food.hideturtle()
         create_food(state)
+    # ADICIONADO
 
     # para ler ou escrever os valores de high score, score e new high score, devem usar os respetivos campos do
     # state: state['high_score'], state['score'] e state['new_high_score']
