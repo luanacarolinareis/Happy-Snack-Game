@@ -69,7 +69,14 @@ def init_state():
         'head': None,  # Variável que corresponde à cabeça da cobra
         'current_direction': None  # Indicação da direção atual do movimento da cobra
     }
+    # ADICIONADO
+    body = {
+        'head': None,  # Variável que corresponde à cabeça da cobra
+        'current_direction': None  # Indicação da direção atual do movimento da cobra
+    }
     state['snake'] = snake
+    state['body'] = body
+    # ADICIONADO
     return state
 
 
@@ -90,15 +97,6 @@ def setup(state):
     snake['head'].showturtle()
     snake['head'].pu()
     snake['head'].color('green')
-
-    # ADICIONADO
-    snake['body'] = turtle.Turtle()
-    snake['body'].shape(SNAKE_SHAPE)
-    snake['body'].showturtle()
-    snake['body'].pu()
-    snake['body'].goto(-20, 0)
-    snake['body'].color('black')
-    # ADICIONADO
 
     create_score_board(state)
     create_food(state)
@@ -122,7 +120,6 @@ def move(state):
     if state['snake']['current_direction'] == 'down':
         snake['head'].setheading(-90)
         snake['head'].fd(20)
-
     # ADICIONADO
 
 
@@ -135,8 +132,8 @@ def create_food(state):
     # a informação sobre a comida deve ser guardada em state['food']
 
     # ADICIONADO
-    x_cor = random.randint(-287, 287)
-    y_cor = random.randint(-387, 387)
+    x_cor = random.randint(-280, 280)
+    y_cor = random.randint(-380, 380)
 
     state['food'] = turtle.Turtle()
     state['food'].shape('circle')
@@ -155,14 +152,13 @@ def check_if_food_to_eat(state):
     # ADICIONADO
     food = state['food']
     snake = state['snake']
-    if snake['head'].distance(food) <= 15:
+    if snake['head'].distance(food) < 15:
         food.hideturtle()
         create_food(state)
-    # ADICIONADO
+    # ADICIONADOS
 
     # para ler ou escrever os valores de high score, score e new high score, devem usar os respetivos campos do
     # state: state['high_score'], state['score'] e state['new_high_score']
-
 
 def boundaries_collision(state):
     """
@@ -183,6 +179,10 @@ def check_collisions(state):
 
 
 def main():
+    # ADICIONADO
+    segments = []
+    # ADICIONADO
+
     state = init_state()
     setup(state)
     while not check_collisions(state):
