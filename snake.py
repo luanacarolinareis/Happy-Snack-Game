@@ -123,6 +123,7 @@ def move(state):
         snake['head'].setheading(-90)
         snake['head'].fd(20)
 
+
     # ADICIONADO
 
 
