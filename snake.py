@@ -9,7 +9,7 @@ DEFAULT_SIZE = 20
 SNAKE_SHAPE = 'square'
 HIGH_SCORES_FILE_PATH = 'high_scores.txt'
 # Controla a velocidade da cobra. Quanto menor o valor, mais rápido é o movimento da cobra.
-SPEED = 0.3
+SPEED = 0.1
 
 
 def load_high_score(state):
@@ -62,21 +62,16 @@ def go_right(state):
 
 
 def init_state():
-    state = {'score_board': None, 'new_high_score': False, 'high_score': 0, 'score': 0, 'food': None, 'window': None}
+    segments = []  # Lista que vai armazenar os segmentos do corpo
+    state = {'score_board': None, 'new_high_score': False, 'high_score': 0, 'score': 0, 'food': None, 'window': None,
+             'body': segments}
     # Informação necessária para a criação do score board
     # Para gerar a comida deverá criar uma nova tartaruga e colocar a mesma numa posição aleatória do campo
     snake = {
         'head': None,  # Variável que corresponde à cabeça da cobra
         'current_direction': None  # Indicação da direção atual do movimento da cobra
     }
-    # ADICIONADO
-    body = {
-        'head': None,  # Variável que corresponde à cabeça da cobra
-        'current_direction': None  # Indicação da direção atual do movimento da cobra
-    }
     state['snake'] = snake
-    state['body'] = body
-    # ADICIONADO
     return state
 
 
@@ -94,7 +89,6 @@ def setup(state):
     snake['current_direction'] = 'stop'
     snake['head'] = turtle.Turtle()
     snake['head'].shape(SNAKE_SHAPE)
-    snake['head'].showturtle()
     snake['head'].pu()
     snake['head'].color('green')
 
@@ -107,6 +101,7 @@ def move(state):
     Função responsável pelo movimento da cobra no ambiente.
     """
     snake = state['snake']
+
     # ADICIONADO
     if state['snake']['current_direction'] == 'up':
         snake['head'].setheading(90)
@@ -128,19 +123,16 @@ def create_food(state):
     Função responsável pela criação da comida. Note que elas deverão ser colocadas em posições aleatórias,
     mas dentro dos limites do ambiente.
     """
-
     # a informação sobre a comida deve ser guardada em state['food']
 
     # ADICIONADO
-    x_cor = random.randint(-280, 280)
-    y_cor = random.randint(-380, 380)
-
     state['food'] = turtle.Turtle()
     state['food'].shape('circle')
-    state['food'].showturtle()
     state['food'].pu()
-    state['food'].goto(x_cor, y_cor)
+    state['food'].goto(random.randint(-250, 250), random.randint(-350, 350))
     state['food'].color('red')
+
+    return state['food']
     # ADICIONADO
 
 
@@ -152,20 +144,44 @@ def check_if_food_to_eat(state):
     # ADICIONADO
     food = state['food']
     snake = state['snake']
+    segments = state['body']
+
     if snake['head'].distance(food) < 15:
-        food.hideturtle()
-        create_food(state)
-    # ADICIONADOS
+        food.hideturtle()  # Esconde a comida "apanhada"
+        create_food(state)  # Gera uma nova comida
+
+        # Adição de um novo segmento corporal à lista "segments"
+        body_segment = turtle.Turtle()
+        body_segment.shape(SNAKE_SHAPE)
+        body_segment.pu()
+        body_segment.color('black')
+        segments.append(body_segment)
+    # ADICIONADO
 
     # para ler ou escrever os valores de high score, score e new high score, devem usar os respetivos campos do
     # state: state['high_score'], state['score'] e state['new_high_score']
+
 
 def boundaries_collision(state):
     """
     Função responsável por verificar se a cobra colidiu com os limites do ambiente. Sempre que isto acontecer a
     função deverá returnar o valor booleano True, caso contrário retorna False.
     """
+
+    # ADICIONADO
+    snake = state['snake']
+    food = state['food']
+    segments = state['body']
+
+    # Se a cabeça da cobra ultrapassou os limites do ambiente...
+    if snake['head'].xcor() > 300 or snake['head'].xcor() < -300 or snake['head'].ycor() > 400 or snake['head'].ycor() < -400:
+        snake['head'].hideturtle()
+        food.hideturtle()
+        for i in segments:
+            i.hideturtle()
+        return True
     return False
+    # ADICIONADO
 
 
 def check_collisions(state):
@@ -179,20 +195,37 @@ def check_collisions(state):
 
 
 def main():
-    # ADICIONADO
-    segments = []
-    # ADICIONADO
+    while True:
+        state = init_state()
+        setup(state)
 
-    state = init_state()
-    setup(state)
-    while not check_collisions(state):
-        state['window'].update()
-        check_if_food_to_eat(state)
-        move(state)
-        time.sleep(SPEED)
-    print("YOU LOSE!")
-    if state['new_high_score']:
-        write_high_score_to_file(state)
+        snake = state['snake']
+        segments = state['body']
+
+        while not check_collisions(state):
+            state['window'].update()
+            check_if_food_to_eat(state)
+
+            # ADICIONADO
+            for i in range(len(segments) - 1, -1, -1):  # Percorre todos os segmentos do corpo, do mais recente para o mais antigo
+                # O primeiro segmento adicionado vai receber as coordenadas da cabeça
+                if i == 0:
+                    x = snake['head'].xcor()
+                    y = snake['head'].ycor()
+
+                # Cada um dos segmentos seguintes vai receber as coordenadas do segmento anterior
+                else:
+                    x = segments[i - 1].xcor()
+                    y = segments[i - 1].ycor()
+                segments[i].goto(x, y)
+            # ADICIONADO
+
+            move(state)
+            time.sleep(SPEED)
+        print("YOU LOSE!")
+
+        if state['new_high_score']:
+            write_high_score_to_file(state)
 
 
 main()
