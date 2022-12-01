@@ -24,7 +24,7 @@ def write_high_score_to_file(state):
         f.seek(0)
         f.truncate()
         f.write(str(load_high_score(state)))
-    f.close()
+        f.close()
 
 
 def create_score_board(state):
@@ -132,7 +132,6 @@ def create_food(state):
     Função responsável pela criação da comida. Note que elas deverão ser colocadas em posições aleatórias,
     mas dentro dos limites do ambiente.
     """
-    segments = state['body']
     # a informação sobre a comida deve ser guardada em state['food']
 
     x = random.randint(-12, 12) * 20
@@ -143,7 +142,18 @@ def create_food(state):
     state['food'].pu()
     state['food'].goto(x, y)
     state['food'].color('red')
+
+    check_food_body_collisions(state)
     return state['food']
+
+# Função que verifica se a comida foi gerada dentro de alguma das partes do corpo
+def check_food_body_collisions(state):
+    food = state['food']
+    segments = state['body']
+    for i in segments:
+        if i.distance(food) < 15:  # Em caso disso ocorrer, cria uma comida nova (noutro local)
+            food.hideturtle()
+            create_food(state)
 
 
 def check_if_food_to_eat(state):
