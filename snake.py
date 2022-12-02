@@ -10,6 +10,9 @@ SNAKE_SHAPE = 'square'
 HIGH_SCORES_FILE_PATH = 'high_scores.txt'
 # Controla a velocidade da cobra. Quanto menor o valor, mais rápido é o movimento da cobra.
 SPEED = 0.1
+turtle.title("Happy Snack Game")
+foods = ['banana.gif', 'bread.gif', 'candy.gif', 'chocolate.gif', 'cookie.gif',
+         'donut.gif', 'doritos.gif', 'egg.gif', 'pizza.gif', 'popcorn.gif']
 
 
 def load_high_score(state):
@@ -18,9 +21,10 @@ def load_high_score(state):
         state['high_score'] = state['score']
     return state['high_score']
 
+
 def write_high_score_to_file(state):
     # devem escrever o valor que está em state['high_score'] no ficheiro de high scores
-    with open('file_score.txt', 'w') as f:
+    with open(HIGH_SCORES_FILE_PATH, 'w') as f:
         f.seek(0)
         f.truncate()
         f.write(str(load_high_score(state)))
@@ -31,18 +35,18 @@ def create_score_board(state):
     score_board = turtle.Turtle()
     score_board.speed(0)
     score_board.shape("square")
-    score_board.color("black")
+    score_board.color('white')
     score_board.penup()
     score_board.hideturtle()
-    score_board.goto(0, MAX_Y / 2.2)
+    score_board.goto(0, MAX_Y / 2.3)
     state['score_board'] = score_board
     load_high_score(state)
     update_score_board(state)
 
 
 def update_score_board(state):
-    file = open("file_score.txt", "r")
     state['score_board'].clear()
+    file = open(HIGH_SCORES_FILE_PATH, "r")
     state['score_board'].write("Score: {} High Score: {}".format(state['score'], file.readline()), align="center",
                                font=("Helvetica", 24, "normal"))
     file.close()
@@ -70,10 +74,11 @@ def go_right(state):
 
 def init_state():
     segments = []  # Lista que vai armazenar os segmentos do corpo
-    file = open("file_score.txt", "r")
+    file = open(HIGH_SCORES_FILE_PATH, "r")
 
     state = {'score_board': None, 'new_high_score': False, 'high_score': int(file.readline()), 'score': 0, 'food': None, 'window': None,
              'body': segments}
+    file.close()
     # Informação necessária para a criação do score board
     # Para gerar a comida deverá criar uma nova tartaruga e colocar a mesma numa posição aleatória do campo
     snake = {
@@ -81,13 +86,16 @@ def init_state():
         'current_direction': None  # Indicação da direção atual do movimento da cobra
     }
     state['snake'] = snake
-    file.close()
     return state
 
 
 def setup(state):
     window = turtle.Screen()
-    window.setup(width=MAX_X, height=MAX_Y)
+    window.setup(width=MAX_X, height=MAX_Y, starty=0)
+    window.bgpic('snake_600_800.png')
+    window.addshape('block_body.gif')
+    for i in foods:
+        window.addshape(i)
     window.listen()
     keyboard = ['w', 'a', 's', 'd', 'W', 'A', 'S', 'D', 'Up', 'Left', 'Down', 'Right']
     for i in range(0, len(keyboard), 4):
@@ -134,11 +142,11 @@ def create_food(state):
     """
     # a informação sobre a comida deve ser guardada em state['food']
 
-    x = random.randint(-12, 12) * 20
-    y = random.randint(-17, 17) * 20
+    x = random.randint(-13, 13) * 20
+    y = random.randint(-18, 18) * 20
 
     state['food'] = turtle.Turtle()
-    state['food'].shape('circle')
+    state['food'].shape(random.choice(foods))
     state['food'].pu()
     state['food'].goto(x, y)
     state['food'].color('red')
@@ -170,8 +178,10 @@ def check_if_food_to_eat(state):
         create_food(state)  # Gera uma nova comida
 
         # Adição de um novo segmento corporal à lista "segments"
+
         body_segment = turtle.Turtle()
-        body_segment.shape(SNAKE_SHAPE)
+        body_segment.shapesize(1, 1, 1)
+        body_segment.shape('block_body.gif')
         body_segment.pu()
         body_segment.color('black')
         segments.append(body_segment)
@@ -193,7 +203,7 @@ def boundaries_collision(state):
     segments = state['body']
 
     # Se a cabeça da cobra ultrapassou os limites do ambiente...
-    if snake['head'].xcor() > 300 or snake['head'].xcor() < -300 or snake['head'].ycor() > 400 or snake['head'].ycor() < -400:
+    if snake['head'].xcor() > 280 or snake['head'].xcor() < -280 or snake['head'].ycor() > 380 or snake['head'].ycor() < -380:
         snake['head'].ht()
         food.hideturtle()
         for i in segments:
@@ -260,3 +270,12 @@ main()
 
 # Nome: Diogo Ramos Barbosa
 # Nº de estudante: 2021234034
+
+'''
+
+Referências:
+Fundo do jogo: https://wallpapercave.com/cartoon-snake-wallpapers
+Corpo da snake: https://github.com/codebasics/python_projects/blob/main/1_snake_game/resources/block.jpg
+Templates das comidas: https://www.canva.com/
+
+'''
