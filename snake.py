@@ -9,7 +9,7 @@ DEFAULT_SIZE = 20
 SNAKE_SHAPE = 'square'
 HIGH_SCORES_FILE_PATH = 'high_scores.txt'
 # Controla a velocidade da cobra. Quanto menor o valor, mais rápido é o movimento da cobra.
-speed = 0.25  # Constante alterada para variável (útil para a construção dos diferentes níveis de jogo)
+speed = 0.16  # Constante alterada para variável (útil para a construção dos diferentes níveis de jogo)
 turtle.title("Happy Snack Game")
 # Lista de imagens que vão ser adicionadas como shapes (mais tarde)
 foods = ['banana.gif', 'bread.gif', 'candy.gif', 'chocolate.gif', 'cookie.gif',
@@ -77,7 +77,6 @@ def init_state():
     state['snake'] = snake
     file.close()
     return state
-
 
 def setup(state):
     window = turtle.Screen()
@@ -167,7 +166,7 @@ def check_if_food_to_eat(state):
         # a velocidade vai aumentar (nível seguinte)
         if state['score'] % 200 == 0 and 0 < state['score'] <= 1000:
             if speed > 0.05:  # Verificação, para evitar atribuição de velocidades negativas
-                speed -= 0.04
+                speed -= 0.02
         write_high_score_to_file(state)
 
 def boundaries_collision(state):
@@ -187,7 +186,7 @@ def boundaries_collision(state):
             i.hideturtle()
         food.hideturtle()
         state['level'].ht()
-        speed = 0.25
+        speed = 0.16
         return True
     return False
 
@@ -210,7 +209,7 @@ def check_collisions(state):
                 j.hideturtle()
             food.hideturtle()
             state['level'].ht()
-            speed = 0.25
+            speed = 0.16
             return True
     return boundaries_collision(state)
 
@@ -272,18 +271,3 @@ def main():
 
 
 main()
-
-"""
-Nome: Luana Carolina Cunha Reis
-Nº de estudante: 2022220606
-
-# Nome: Diogo Ramos Barbosa
-# Nº de estudante: 2021234034
-"""
-
-'''
-Referências:
-Fundo do jogo: https://wallpapercave.com/cartoon-snake-wallpapers
-Corpo da snake: https://github.com/codebasics/python_projects/blob/main/1_snake_game/resources/block.jpg
-Templates das comidas: https://www.canva.com/
-'''
