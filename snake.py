@@ -134,7 +134,7 @@ def create_food(state):
     # dado que a snake anda sempre de 20 em 20 unidades (para qualquer direção)
     x = random.randint(-13, 13) * 20  # 13 * 20 = (600 / 2) - (20 * 2) = 260
     y = random.randint(-18, 16) * 20  # 18 * 20 = (800 / 2) - (20 * 2) = 360
-    # NOTA: no y, é usado 16 como valor máximo, para prevenir a geração de comida em cima da score board
+    # NOTA: no y, é usado 16 como valor máximo, para prevenir a geração de comida em cima do score board
     state['food'] = turtle.Turtle()
     state['food'].shape(random.choice(foods))  # A shape da comida vai ser aleatoriamente escolhida, através da lista inicial
     state['food'].pu()
