@@ -1,5 +1,4 @@
 # HappySnack Game  
-Jogo da Snake desenvolvido em Python
 
 HappySnack Game é um projeto criado no âmbito da unidade curricular de Introdução à Programação e Resolução de Problemas. O objetivo foi implementar, em Python, o clássico jogo Snake, onde o jogador controla uma cobra que cresce ao comer snacks, evitando colisões com as paredes e com o próprio corpo.
 
