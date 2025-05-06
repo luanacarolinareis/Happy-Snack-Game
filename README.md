@@ -7,7 +7,7 @@ HappySnack Game é um projeto criado no âmbito da unidade curricular de Introdu
 ## ✨ Funcionalidades Principais
 
 - **Clássica jogabilidade Snake**
-  - Controle da cobra usando as teclas direcionais do teclado.
+  - Controlo da cobra usando as teclas direcionais do teclado.
   - A cobra cresce a cada snack consumido.
   - O jogo termina ao colidir com as paredes ou consigo própria.
 
