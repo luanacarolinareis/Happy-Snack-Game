@@ -20,7 +20,7 @@ HappySnack Game é um projeto criado no âmbito da unidade curricular de Introdu
   - Feedback visual imediato das ações do jogador.
 
 - **Reinício fácil**
-  - Possibilidade de reiniciar o jogo após o fim.
+  - Reinício do jogo após game over.
 
 ---
 
