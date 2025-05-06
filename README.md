@@ -59,8 +59,7 @@ HappySnack Game é um projeto criado no âmbito da unidade curricular de Introdu
 - O objetivo é comer o máximo de snacks possível, fazendo a cobra crescer.
 - Evite colidir com as paredes ou com o próprio corpo.
 - O jogo termina quando ocorre uma colisão.
-- Para reiniciar, basta seguir as instruções apresentadas no final do jogo.
-
+  
 ---
 
 ## 📸 Capturas de Ecrã
