@@ -64,8 +64,8 @@ HappySnack Game é um projeto criado no âmbito da unidade curricular de Introdu
 
 ## 📸 Capturas de Ecrã
 
-![image](https://github.com/user-attachments/assets/74b36956-a408-4bfc-9c08-2c2be95f6d0b)
-![440917538-b3c23193-8405-4e0b-b8cd-91719ff8c26d](https://github.com/user-attachments/assets/61a3bfba-1da6-4309-ae3a-dbf573ad08ed)
+<img src="https://github.com/user-attachments/assets/74b36956-a408-4bfc-9c08-2c2be95f6d0b" width="500"/>
+<img src="https://github.com/user-attachments/assets/61a3bfba-1da6-4309-ae3a-dbf573ad08ed" width="500"/>
 
 ---
 
